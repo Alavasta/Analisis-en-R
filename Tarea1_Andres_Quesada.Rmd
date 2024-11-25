@@ -1,0 +1,301 @@
+---
+title: "Tarea1_Andres_Quesada"
+author: "Andrés Alejandro Quesada Quirós"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **Ejercicio número 1**
+
+**1-Cargue el archivo “ConsumoEuropa.csv” usando el programa “Bloc de Notas” para ver cuál es el separador de decimales, el separador de datos, si tiene o no encabezado y si tiene o no nombres de filas.**
+
+```{r datos_consumo, echo=FALSE}
+
+df_consumo <- read.csv("C:/Users/Quesa/Documents/ConsumoEuropa.csv", sep = ";", dec = ",", header=TRUE, row.names = 1)
+df_consumo
+```
+
+**2-Utilizando la función str(), verifique los tipos de variables que contiene el archivo cargado (Cuantitativo o Cualitativo), tome en consideración la naturaleza de cada variable para determinar si las variables fueron correctamente cargadas. En caso de que alguna variable se haya cargado como cuantitativa y la misma debe ser cualitativa, o viceversa, realice los ajustes respectivos para transformar la variable.**
+
+```{r tipo_datos, echo=FALSE}
+
+str(df_consumo)
+```
+
+R/ Los valores del dataframe son correctos.
+
+**3-Utilizando las funciones is.na() y na.omit(), identifique si existen valores nulos dentro de los datos cargados, y en caso afirmativo, elimine las observaciones que presentan datos nulos en alguna de las variables.**
+
+```{r valores_nulos, echo=FALSE}
+
+sum(is.na(df_consumo))
+
+```
+
+R/ No hay valores nulos dentro del data frame que involucre la necesidad de aplicar un método de imputación o exclusión para los valores nulos.
+
+**4- Calcule el resumen para tres variables numéricas (mínimo, máximo, promedio).** 
+
+
+```{r resumen, echo=FALSE}
+
+"Maximo, Minimo y Promedio para el consumo de carne animal, respectivamente"
+
+max(df_consumo$CarneAnimal)
+min(df_consumo$CarneAnimal)
+mean(df_consumo$CarneAnimal)
+
+"Maximo, Minimo y Promedio para el consumo de leche, respectivamente"
+
+max(df_consumo$Leche)
+min(df_consumo$Leche)
+mean(df_consumo$Leche)
+
+"Maximo, Minimo y Promedio para el consumo de huevos, respectivamente"
+
+max(df_consumo$Huevos)
+min(df_consumo$Huevos)
+mean(df_consumo$Huevos)
+```
+
+**5- Utilizando diagramas de cajas y bigotes (boxplots), identifique la existencia de datos atípicos para cada una de las variables de tipo numéricas.**
+
+```{r datos_atipicos, echo=FALSE}
+
+library(car)
+
+Boxplot(df_consumo, main= "Concetración de los datos sobre consumo de proteina 
+        en algunos paise de Europa", caption = "Valores en gramos", ylab = " Consumo promedio de proteinas", col= "blue")
+
+```
+
+R/ A partir de los resultados de la concentración de datos se puede afirmar lo siguiente: Francia y Reino Unido presentan consumo de proteina de carne animal promedio más elevado que el valor máximo de los países europeos analizados. Por otra parte, Albania y Portugal presentan un consumo promedio de huevos más bajo que los paises europeos analizados. Finalmente, Yugoslavia y Portugal consume más pescado que los paises europeos analizados. Estos resultados son útiles para iniciar un estudio diagnóstico, el cual nos permita conocer la causa de estos resultados y así permitir lanzar productos de consumo en estos paises basados en sus preferencias.
+
+**6-  Calcule y grafique la matriz de correlaciones de los datos cargados y con base en la misma realice la interpretación de al menos tres correlaciones. Estas interpretaciones deben ser dirigidas hacia una persona que no conoce nada de estadística por lo cual se debe utilizar un lenguaje no técnico.**
+
+```{r matriz_correlacion, echo=FALSE}
+
+library(corrplot)
+
+corrplot(cor(df_consumo), method = "number")
+
+```
+
+R/ Según la matriz de correlación, presentada anteriormente, se pueden obtener ciertas conclusiones, tales como las siguientes:
+al incrementar el consumo de carne animal, también aumenta el consumo de huevos; asimismo, este mismo patrón se puede encontrar con los huevos y la carne de cerdo; pero sucede lo contrario con el consumo de huevos y cereales, dado que se visualiza un patrón que al incrementar el consumo de huevos disminuye el consumo de huevos. Estos datos, se podría decir que, son resultado de las patrones de alimentación de las personas de los paises europeos.
+
+**7-Realice dos gráficos de dispersión utilizando las variables cuantitativas y genere una interpretación para cada gráfico.**
+
+```{r dispersion, echo=FALSE}
+
+library(ggplot2)
+
+ggplot(datos = df_consumo, mapping = aes(x = df_consumo$CarneAnimal, y = df_consumo$Huevos)) + geom_point() + labs(title = "Relación entre el consumo de carne animal y huevos", x = "Consumo de carne", y = "Consumo de huevo")
+
+```
+
+R/En este gráfico de dispersión se puede visualizar la relación existente entre el consumo de carne y el cosnumo de huevo, el cual, se puede observar que al aumentar el consumo de carne también aumenta el consumo de huevo.
+
+
+```{r dispersion_2, echo=FALSE}
+
+library(ggplot2)
+
+ggplot(datos = df_consumo, mapping = aes(x = df_consumo$CarneCerdo, y = df_consumo$Huevos)) + geom_point() + labs(title = "Relación entre el consumo de carne de cerdo y huevos", x = "Consumo de carne de cerdo", y = "Consumo de huevo")
+```
+
+R/En este gráfico de dispersión se puede visualizar la relación existente entre el consumo de carne de cerdo y el consumo de huevo, el cual, se puede observar que al aumentar el consumo de carne de cerdo también aumenta el consumo de huevo.
+
+# Ejercicio número 2
+
+**1- Cargue el archivo “SAHeart.csv” usando el programa “Bloc de Notas” para ver cuál es el separador de decimales, el separador de datos, si tiene o no encabezado y si tiene o no nombres de filas.**
+
+```{r datos_corazon, echo=FALSE}
+
+df_corazon <- read.csv("C:/Users/Quesa/Documents/SAheart.csv", sep = ";", dec = ",", header = TRUE)
+df_corazon
+
+```
+
+**2-el archivo cargado (Cuantitativo o Cualitativo), tome en consideración la naturaleza de cada variable para determinar si las variables fueron correctamente cargadas. En caso de que alguna variable se haya cargado como cuantitativa y la misma debe ser cualitativa, o viceversa, realice los ajustes respectivos para transformar la variable.**
+
+```{r tipo_datos_corazon, echo=FALSE}
+
+str(df_corazon)
+
+```
+
+R/Del dataframe orginal, hay datos que no concuerdan con el tipo de datos que deberian ser, por lo cual se procede a convertir los datos a sus valores correctos.
+
+```{r convercion, echo=TRUE}
+
+df_corazon$tobacco <- as.numeric(df_corazon$tobacco)
+df_corazon$ldl <- as.numeric(df_corazon$ldl)
+df_corazon$adiposity <- as.numeric(df_corazon$adiposity)
+df_corazon$obesity <- as.numeric(df_corazon$obesity)
+df_corazon$alcohol <- as.numeric(df_corazon$alcohol)
+
+str(df_corazon)
+
+```
+
+**3- Utilizando la función is.na(), identifique si existen valores nulos dentro de los datos cargados, y en caso afirmativo, impute las observaciones que presentan datos nulos por el valor 0**
+
+```{r dato_nulos, echo=FALSE}
+
+sum(is.na(df_corazon))
+
+```
+
+R/El dataframe no presenta valores nulos que necesiten ser imputados.
+
+**4-Calcule el resumen para tres variables numéricas (mínimo, máximo, promedio)**
+
+```{r medidas, echo=FALSE}
+
+"Máximo, Minimo y Promedio de la presion systolica, respectivamente"
+
+max(df_corazon$sbp)
+min(df_corazon$sbp)
+mean(df_corazon$sbp)
+
+"Máximo, Minimo y Promedio del consumo de tabaco, respectivament"
+
+max(df_corazon$tobacco)
+min(df_corazon$tobacco)
+mean(df_corazon$tobacco)
+
+"Máximo, Minimo y Promedio de colesterol, respectivamente"
+
+max(df_corazon$ldl)
+min(df_corazon$ldl)
+mean(df_corazon$ldl)
+```
+
+**5-Utilizando diagramas de cajas y bigotes (boxplots), identifique la existencia de datos atípicos para cada una de las variables de tipo numéricas.**
+
+```{r boxplot, echo=FALSE}
+
+df_corazon_sin <- df_corazon[,-5]
+df_corazon_sina <- df_corazon_sin[,-10]
+df_corazon_sine <- df_corazon_sina[,-9]
+
+library(car)
+
+Boxplot(df_corazon_sine, main = "Concetracion de los datos sobre los factores de riesgo de sufrir un ataque al corazon", col="blue" )
+
+```
+
+**6-Calcule y grafique la matriz de correlaciones de los datos cargados y con base en la misma realice la interpretación de al menos tres correlaciones. Estas interpretaciones deben ser dirigidas hacia una persona que no conoce nada de estadística por lo cual se debe utilizar un lenguaje no técnico.**
+
+```{r matriz_correlacion_1, echo=FALSE}
+
+library(corrplot)
+
+corrplot(cor(df_corazon_sine), method = "number")
+
+```
+
+R/ Según los resultados de la matriz de correlación se pueden apreciar relaciones entre las variables de obsidad y adiposidad, donde al incrementar los niveles de grasa del cuerpo también aumenta el peso corporal, adicionalmente, también se puede visualizar este mismo comportamiento con la edad y la adiposidad; en el caso contrario sucede con el alcohol y el colesterol, el cual al disminuir el consumo de alcohol también disminuye el colesterol.
+
+# Ejercicio número tres.
+
+**1-Cargue el archivo “titanic.csv” usando el programa “Bloc de Notas” para ver cuál es el separador de decimales, el separador de datos, si tiene o no encabezado y si tiene o no nombres de filas.**
+
+```{r titanic, echo=FALSE}
+
+df_titanic <- read.csv("C:/Users/Quesa/Documents/titanic.csv", sep = ",", header = TRUE)
+df_titanic
+
+```
+
+**2-Utilizando la función str(), verifique los tipos de variables que contiene el archivo cargado (Cuantitativo o Cualitativo), tome en consideración la naturaleza de cada variable para determinar si las variables fueron correctamente cargadas. En caso de que alguna variable se haya cargado como cuantitativa y la misma debe ser cualitativa, o viceversa,realice los ajustes respectivos para transformar la variable.**
+
+```{r tipo_datos_titanic, echo=FALSE}
+
+str(df_titanic)
+
+```
+
+R/Los datos no necesitan ser cambiados a otros formatos.
+
+**3-Identifique si existen valores nulos dentro de los datos cargados, en caso afirmativo, sustituya los valores nulos con cero.**
+
+Nota: Dado que el dataframe contiene valores nulos, se procede a excluir estos valores antes de obtener los valores de máximo, minimo y promedio dado que los resultados podrian resultar distorsionados.
+
+```{r limpieza_2, echo=FALSE}
+
+sum(is.na(df_titanic))
+
+df_titanic <- na.omit(df_titanic)
+
+sum(is.na(df_titanic))
+
+```
+
+**4-Calcule el resumen para tres variables numéricas (mínimo, máximo, promedio).**
+
+```{r medidas_3, echo=FALSE}
+
+"Maximo, Minimo y Promedio de la edad de los pasajeros del Titanic"
+
+max(df_titanic$Age)
+min(df_titanic$Age)
+mean(df_titanic$Age)
+
+"Maximo, Minimo y Promedio del precio del tiquete de los pasajeros del Titanic"
+
+max(df_titanic$Fare)
+min(df_titanic$Fare)
+mean(df_titanic$Fare)
+
+"Maximo, Minimo y Promedio de hermanos y conyuges a bordo del titanic de los pasajeros del Titanic"
+
+max(df_titanic$SibSp)
+min(df_titanic$SibSp)
+mean(df_titanic$SibSp)
+
+
+```
+
+**5-Utilizando diagramas de cajas y bigotes (boxplots), identifique la existencia de datos atípicos para cada una de las variables de tipo numéricas.**
+
+```{r boxplot_titanic, echo=FALSE}
+
+edad <- df_titanic$Age
+hijos <- df_titanic$SibSp
+precio <- df_titanic$Parch
+ticket <- df_titanic$Fare
+
+df_titanic_2 <- data.frame(Age = edad, SibSp = hijos, Parch = precio, Fare = ticket)
+
+library(car)
+Boxplot(df_titanic_2, main = "Datos Atipicos de los pasajeros del Titanic")
+
+```
+
+**6-Calcule y grafique la matriz de correlaciones de los datos cargados y con base en la misma realice la interpretación de al menos tres correlaciones. Estas interpretaciones deben ser dirigidas hacia una persona que no conoce nada de estadística por lo cual se debe utilizar un lenguaje no técnico.**
+
+```{r matirz, echo=FALSE}
+
+library(corrplot)
+
+corrplot(cor(df_titanic_2), method = "number")
+
+```
+
+R/  Según los resultados de la matriz de correlación se pueden apreciar relaciones entre las variables de edad y cantidad de hermanos y conyuges, donde al aumentar la edad disminuyen la cantidad de hermanos y conyuges a bordo, adicionalmente, también se puede visualizar este mismo comportamiento con la edad y la cantidad de hijos y padres a bordo del titanic; en el caso contrario sucede con la edad y el precio del ticket, el cual al aumentar la edad también aumenta el precio del ticket.
+
+
+
+
+
+
+
